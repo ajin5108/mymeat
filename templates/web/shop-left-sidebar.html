@@ -1,0 +1,313 @@
+{% extends 'web/partials/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <!-- mobile fix menu start -->
+    <div class="mobile-menu d-md-none d-block mobile-cart">
+        <ul>
+            <li class="active">
+                <a href="/">
+                    {% comment %} <i class="iconly-Home icli"></i> {% endcomment %}
+                    <span class="material-symbols-outlined">
+                        home
+                        </span>
+                    <span>Home</span>
+                </a>
+            </li>
+
+            <li class="mobile-category">
+                <a href="javascript:void(0)">
+                    {% comment %} <i class="iconly-Category icli js-link"></i> {% endcomment %}
+                    <span class="material-symbols-outlined">
+                        category
+                        </span>
+                    <span>Category</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'user:search' %}" class="search-box">
+                    {% comment %} <i class="iconly-Search icli"></i> {% endcomment %}
+                    <span class="material-symbols-outlined">
+                        search
+                        </span>
+                    <span>Search</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'user:viewwishlist' %}">
+                    {% comment %} <i class="iconly-Heart icli"></i> {% endcomment %}
+                    <span class="material-symbols-outlined">
+                        favorite
+                        </span>
+                    <span>My Wish</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'user:viewcart' %}">
+                    {% comment %} <i class="iconly-Bag-2 icli fly-cate"></i> {% endcomment %}
+                    <span class="material-symbols-outlined">
+                        shopping_cart
+                        </span>
+                    <span>Cart</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- mobile fix menu end -->
+
+    <!-- Breadcrumb Section Start -->
+    <section class="breadscrumb-section pt-0">
+        <div class="container-fluid-lg">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadscrumb-contain">
+                        <h2>Shop Your Favourite</h2>
+                        {% comment %} <nav>
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item">
+                                    <a href="/">
+                                        <i class="fa fa-2x fa-solid fa-house"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">Shop Left Sidebar</li>
+                            </ol>
+                        </nav> {% endcomment %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Poster Section Start -->
+   
+    <!-- Shop Section Start -->
+    <section class="section-b-space shop-section ">
+        <div class="container-fluid-lg">
+            <div class="row">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-info">
+                                {{message}}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="row g-sm-4 g-3 product-list-section mt-3">
+                        {% if category.get_subcategories %}
+                    {% for sub in category.get_subcategories %}
+                    {% for product in sub.get_products %}
+                    <div class="col-lg-2 col-6 px-0">                                       
+                        <div class="product-box" style="border-right:0px  border:solid 1px;border: solid 1px;/* border-block-color: grey; */border-color: #550e157d;">
+                            <div class="product-image">
+                                <a href={% url 'user:product' product.id %}>
+                                    <img src="{{product.image.url}}"
+                                            class="img-fluid blur-up lazyload" alt="">
+                                </a>
+                                <ul class="product-option">
+                                    <li data-bs-toggle="tooltip" data-bs-placement="top"
+                                                title="View">
+                                        <a href={% url 'user:product' product.id %}>
+                                            <i data-feather="eye"></i>
+                                        </a>
+                                    </li>
+                                    <li data-bs-toggle="tooltip" data-bs-placement="top"
+                                                title="Wishlist">
+                                        <a href="{% url 'user:addtowishlist' product.id %}">
+                                            <i data-feather="heart"></i>
+                                        </a>
+                                        </li>
+                                </ul>
+                            </div>
+                            <div class="product-detail">
+                                <a href={% url 'user:product' product.id %}>
+                                            <h6 class="name " style="min-height: 0px; max-height: none; height: 22px; text-align: -webkit-center;">{{product.product}}</h6>
+                                </a>
+                                <h5 class="sold text-content">
+                                        <span class="theme-color price">Rs {{product.offer_price}}</span>
+                                            <del>{{product.price}}</del>
+                                </h5>
+                                <div class="product-rating mt-sm-2 mt-1">
+                                        <ul class="rating">
+                                            <li>
+                                                <i data-feather="star" class="fill"></i>
+                                            </li>
+                                            <li>
+                                                <i data-feather="star" class="fill"></i>
+                                            </li>
+                                            <li>
+                                                <i data-feather="star" class="fill"></i>
+                                            </li>
+                                            <li>
+                                                <i data-feather="star" class="fill"></i>
+                                            </li>
+                                            <li>
+                                                <i data-feather="star"></i>
+                                            </li>
+                                        </ul>
+
+                                        <!-- <h6 class="theme-color">In Stock</h6> -->
+                                </div>
+                                <div class="add-to-cart-box">
+                                    <a href="{% url 'user:addtocart' product.id %}">
+                                        <button class="btn btn-add-cart">Add To Cart</button>
+                                    </a>                                      
+                                </div>
+                            </div>
+                        </div>                                        
+                    </div>
+                    {% endfor %}
+                    {% endfor %}
+
+                    {% else %}
+
+                    {% for product in category.get_products%}
+                    <div class="col-lg-4 col-6 px-0">                                       
+                        <div class="col-lg-2 col-6 px-0">                                       
+                            <div class="product-box" style="border-right:0px  border:solid 1px;border: solid 1px;/* border-block-color: grey; */border-color: grey;">
+                                <div class="product-image">
+                                    <a href={% url 'user:product' topsaves.id %}>
+                                        <img src="{{topsaves.image.url}}"
+                                                class="img-fluid blur-up lazyload" alt="">
+                                    </a>
+                                    <ul class="product-option">
+                                        <li data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    title="View">
+                                            <a href={% url 'user:product' topsaves.id %}>
+                                                <i data-feather="eye"></i>
+                                            </a>
+                                        </li>
+                                        <li data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    title="Wishlist">
+                                            <a href="{% url 'user:addtowishlist' topsaves.id %}">
+                                                <i data-feather="heart"></i>
+                                            </a>
+                                            </li>
+                                    </ul>
+                                </div>
+                                <div class="product-detail">
+                                    <a href={% url 'user:product' topsaves.id %}>
+                                                <h6 class="name " style="min-height: 0px; max-height: none; height: 22px; text-align: -webkit-center;">{{topsaves.product}}</h6>
+                                    </a>
+                                    <h5 class="sold text-content">
+                                            <span class="theme-color price">Rs {{topsaves.offer_price}}</span>
+                                                <del>{{topsaves.price}}</del>
+                                    </h5>
+                                    <div class="product-rating mt-sm-2 mt-1">
+                                            <ul class="rating">
+                                                <li>
+                                                    <i data-feather="star" class="fill"></i>
+                                                </li>
+                                                <li>
+                                                    <i data-feather="star" class="fill"></i>
+                                                </li>
+                                                <li>
+                                                    <i data-feather="star" class="fill"></i>
+                                                </li>
+                                                <li>
+                                                    <i data-feather="star" class="fill"></i>
+                                                </li>
+                                                <li>
+                                                    <i data-feather="star"></i>
+                                                </li>
+                                            </ul>
+
+                                            <!-- <h6 class="theme-color">In Stock</h6> -->
+                                    </div>
+                                    <div class="add-to-cart-box">
+                                        <a href="{% url 'user:addtocart' topsaves.id %}">
+                                            <button class="btn btn-add-cart">Add To Cart</button>
+                                        </a>                                      
+                                    </div>
+                                </div>
+                            </div>                                        
+                        </div>                                       
+                                </div>
+                    {% endfor %}
+                    {% endif %}
+                        
+                    </div>
+                        
+                {% comment %}
+                    <div class="row g-sm-4 g-3">
+                        {% for product in products %}
+                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                            <img src="{{product.image.url}}" class="bg-img blur-up lazyload" alt="">
+                            <div class="banner-details">
+                                <div class="banner-box">
+                                    <h6 class="text-danger">5% OFF</h6>
+                                    <h5>Hot Deals on New Items</h5>
+                                    <h6 class="text-content">Daily Essentials Eggs & Dairy</h6>
+                                </div>
+                                <a href="shop-left-sidebar.html" class="banner-button text-white">Shop Now <i
+                                        class="fa-solid fa-right-long ms-2"></i></a>
+                            </div>
+                        </div>
+                        
+                        {% endfor %}
+                    </div>
+                {% endcomment %}
+                    
+                    <nav class="custome-pagination">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-disabled="true">
+                                    <i class="fa-solid fa-angles-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link" href="javascript:void(0)">1</a>
+                            </li>
+                            <li class="page-item" aria-current="page">
+                                <a class="page-link" href="javascript:void(0)">2</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:void(0)">3</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:void(0)">
+                                    <i class="fa-solid fa-angles-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+ 
+    <!-- Shop Section End -->
+
+
+
+    
+
+    <!-- Add to cart Modal Start -->
+    <div class="add-cart-box">
+        <div class="add-iamge">
+            <img src="https://themes.pixelstrap.com/fastkart/assets/images/cake/pro/1.jpg"
+                class="img-fluid blur-up lazyload" alt="">
+        </div>
+
+        <div class="add-contain">
+            <h6>Added to Cart</h6>
+        </div>
+    </div>
+    <!-- Add to cart Modal End -->
+
+  
+
+   
+
+<!-- shop-left-sidebar.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 07 Nov 2022 10:09:25 GMT -->
+
+</html>
+
+
+{% endblock %}
